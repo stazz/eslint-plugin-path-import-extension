@@ -1,5 +1,5 @@
 /**
- * @file This file contains rule definition for "require-relative-export-extension".
+ * @file This file contains rule definition for "require-path-export-extension".
  */
 import { type TSESLint, type TSESTree } from "@typescript-eslint/utils";
 import ruleCreator, {
@@ -12,7 +12,7 @@ import ruleCreator, {
 } from "./ruleCreator";
 
 export const RULE_NAME = "require-path-export-extension";
-const MESSAGE_MISSING_EXTENSION = "message-export-missing-extension";
+export const MESSAGE_MISSING_EXTENSION = "message-export-missing-extension";
 export default ruleCreator({
   name: RULE_NAME,
   meta: {
@@ -24,7 +24,7 @@ export default ruleCreator({
       requiresTypeChecking: false,
     },
     messages: {
-      [MESSAGE_MISSING_EXTENSION]: "path-based export does not have extension.",
+      [MESSAGE_MISSING_EXTENSION]: "Path-based export does not have extension.",
     },
     schema: optionsSchema,
   },
@@ -47,7 +47,7 @@ export default ruleCreator({
         ctx.report({
           node,
           messageId: MESSAGE_MISSING_EXTENSION,
-          fix: createFix(extension, knownExtensions, node),
+          fix: createFix(extension, knownExtensions, node, ctx.getFilename()),
         });
       }
     };
@@ -58,9 +58,9 @@ export default ruleCreator({
           checkModuleName(source);
         }
       },
-      // ExportNamedDeclaration: export x = y
+      // ExportNamedDeclaration: export { x } from "./something"
       ExportNamedDeclaration: ({ source, exportKind }) => {
-        if (source && exportKind !== "type") {
+        if (source && (checkAlsoType || exportKind !== "type")) {
           // I guess currently this barely ever happens?
           checkModuleName(source);
         }

@@ -1,5 +1,5 @@
 {
-  "name": "eslint-plugin-relative-import-extension",
+  "name": "eslint-plugin-path-import-extension",
   "version": "0.9.0",
   "author": {
     "name": "Stanislav Muhametsin",
@@ -9,7 +9,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/stazz/eslint-plugin-relative-import-extension"
+    "url": "https://github.com/stazz/eslint-plugin-path-import-extension"
   },
   "files": [
     "./src",

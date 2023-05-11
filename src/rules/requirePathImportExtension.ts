@@ -1,5 +1,5 @@
 /**
- * @file This file contains rule definition for "require-relative-import-extension".
+ * @file This file contains rule definition for "require-path-import-extension".
  */
 import {
   AST_NODE_TYPES,
@@ -35,7 +35,7 @@ export default ruleCreator({
   defaultOptions,
   create: (
     // We must use explicit typing for context, as otherwise we will get TypeScript AST-based context.
-    // What we want is TS-ESLing AST-based context, since we specify "@typescript-eslint/parser" as parser in configs/recommended.ts.
+    // What we want is TS-ESLint AST-based context, since we specify "@typescript-eslint/parser" as parser in configs/recommended.ts.
     ctx: Readonly<
       TSESLint.RuleContext<typeof MESSAGE_MISSING_EXTENSION, Options>
     >,
@@ -51,7 +51,7 @@ export default ruleCreator({
         ctx.report({
           node,
           messageId: MESSAGE_MISSING_EXTENSION,
-          fix: createFix(extension, knownExtensions, node),
+          fix: createFix(extension, knownExtensions, node, ctx.getFilename()),
         });
       }
     };

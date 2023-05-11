@@ -1,9 +1,12 @@
 /**
  * @file This file contains common test utilities to run tests for ESLint rules.
  */
-import { AST_NODE_TYPES, ESLintUtils } from "@typescript-eslint/utils";
-import { type Options } from "../ruleCreator";
-import type { RuleModule } from "@typescript-eslint/utils/dist/ts-eslint";
+import {
+  AST_NODE_TYPES,
+  ESLintUtils,
+  TSESLint,
+} from "@typescript-eslint/utils";
+import { type Options } from "../../rule-helpers";
 
 /**
  * Runs tests for given test specifications.
@@ -13,7 +16,7 @@ import type { RuleModule } from "@typescript-eslint/utils/dist/ts-eslint";
  * @returns An array of `undefined` (`void`) objects for each given element in `testSpecs`.
  */
 export default <TMessageIds extends string>(
-  rule: RuleModule<TMessageIds, Options>,
+  rule: TSESLint.RuleModule<TMessageIds, Options>,
   messageId: TMessageIds,
   testSpecs: ReadonlyArray<TestOpts>,
 ) =>
@@ -56,7 +59,7 @@ export interface TestOpts {
 
 const performTest =
   <TMessageIds extends string>(
-    rule: RuleModule<TMessageIds, Options>,
+    rule: TSESLint.RuleModule<TMessageIds, Options>,
     messageId: TMessageIds,
     ruleTester: ESLintUtils.RuleTester,
   ) =>

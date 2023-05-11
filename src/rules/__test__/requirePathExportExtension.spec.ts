@@ -6,7 +6,7 @@ import test from "ava";
 import setupAVA from "./setupAva";
 import performTests from "./performTests";
 import spec, { MESSAGE_MISSING_EXTENSION } from "../requirePathExportExtension";
-import type { Options } from "../ruleCreator";
+import type { Options } from "../../rule-helpers";
 
 const optionsForTriggeringForTypedExports: Options = [null, true, null];
 setupAVA(test);

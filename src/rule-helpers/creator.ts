@@ -2,11 +2,17 @@
  * @file This file contains reusable callback to create ESLint rules specific to this package.
  */
 import { ESLintUtils, TSESLint } from "@typescript-eslint/utils";
-import {
-  type ESLintOptions,
-  optionsSchema,
-  defaultOptions,
-} from "./options.js";
+import { type ESLintOptions, optionsSchema, defaultOptions } from "./options";
+import { declare } from "@babel/helper-plugin-utils";
+
+// const createBabelPlugin = declare((api, opts, dirname) => ({
+//   name: "hello",
+//   visitor: {
+//     ImportDeclaration: (node, pluginPass) => {
+//       node.d
+//     }
+//   }
+// }));
 
 /**
  * Creates callback to create new ESLint rules, which are bound to {@link Options} and using {@link TSESLint.RuleContext}.

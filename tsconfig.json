@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
-    // ESLint plugins must be CJS AFAIK at least for now
-    "module": "CommonJS",
+    "module": "ESNext",
     "moduleResolution": "node",
     "lib": [
       "ESNext"

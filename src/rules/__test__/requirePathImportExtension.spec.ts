@@ -7,6 +7,7 @@ import setupAVA from "./setupAva";
 import performTests from "./performTests";
 import spec, { MESSAGE_MISSING_EXTENSION } from "../requirePathImportExtension";
 import type { ESLintOptions } from "../../rule-helpers";
+import * as path from "node:path";
 
 const optionsForTriggeringForTypedExports: ESLintOptions = [
   { checkAlsoType: true },
@@ -57,7 +58,7 @@ performTests(spec, MESSAGE_MISSING_EXTENSION, [
     name: "Relative import to directory should be auto-fixed",
     code: 'import dummy from "./src"',
     fixedCode: 'import dummy from "./src/index.js"',
-    filename: process.cwd(),
+    filename: path.join(process.cwd(), "file.ts"),
   },
   {
     name: "Relative import with multiple mixed elements should be auto-fixed",

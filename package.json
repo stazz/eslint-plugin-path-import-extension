@@ -18,7 +18,7 @@
     "README.md",
     "LICENSE.txt"
   ],
-  "type": "commonjs",
+  "type": "module",
   "main": "./dist-cjs/index.js",
   "types": "./dist-ts/index.d.ts",
   "exports": {

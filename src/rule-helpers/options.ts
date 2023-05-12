@@ -2,45 +2,29 @@
  * @file This file contains code related to rule options.
  */
 import { type JSONSchema4 } from "json-schema";
+import * as path from "node:path";
+
 /**
  * The schema for rule options.
  */
 export const optionsSchema: Array<JSONSchema4> = [
   // The extension that rule will enforce.
   {
-    oneOf: [
-      {
-        type: "null",
-      },
-      {
+    type: "object",
+    properties: {
+      extension: {
         type: "string",
       },
-    ],
-  },
-  // Should the rule be applied also for "type" imports?
-  {
-    oneOf: [
-      {
-        type: "null",
-      },
-      {
+      checkAlsoType: {
         type: "boolean",
       },
-    ],
-  },
-  // Known extensions
-  {
-    oneOf: [
-      {
-        type: "null",
-      },
-      {
+      knownExtensions: {
         type: "array",
-        items: {
-          type: "string",
-        },
+        items: { type: "string" },
       },
-    ],
+    },
+    minProperties: 0,
+    maxProperties: 3,
   },
 ];
 
@@ -48,32 +32,63 @@ export const optionsSchema: Array<JSONSchema4> = [
  * This type is runtime type of options for rules of this plugin, as represented by JSON schema {@link optionsSchema}.
  */
 export type Options = Readonly<
-  [string | null, boolean | null, ReadonlyArray<string> | null]
+  Partial<{
+    extension: string;
+    checkAlsoType: boolean;
+    knownExtensions: ReadonlyArray<string>;
+  }>
 >; // We could use "json-schema-to-ts" module here, but unfortunately that operates on JSON Schema 7, while ESLint operates on JSON Schema 4
+
+/**
+ * The type to use when declaring {@link Options} for ESLint.
+ */
+export type ESLintOptions = Readonly<[Options]>;
+
+/**
+ * The type after processing partial {@link Options} into full options.
+ */
+export type FullOptions = Readonly<{ [P in keyof Options]-?: Options[P] }>;
 
 /**
  * The default options for the rules.
  */
-export const defaultOptions = [
-  ".js",
-  false,
-  [".ts", ".mjs", ".mts", ".ets", ".ejs", ".js"],
-] as const satisfies Options;
+export const defaultOptions = {
+  checkAlsoType: false,
+  knownExtensions: [".ts", ".mjs", ".mts", ".cts", ".cjs", ".js"],
+} as const satisfies Options;
 
+// eslint-disable-next-line jsdoc/require-param
+/* eslint-disable jsdoc/check-param-names, jsdoc/require-param */
 /**
- * Helper function to get named options from ESLint options array.
- * @param param0 The ESLint options array.
- * @param param0."0" Privately deconstructed variable.
- * @param param0."1" Privately deconstructed variable.
- * @param param0."2" Privately deconstructed variable.
- * @returns Named options, using defaults if options array did not have element for that option.
+ * Helper function to get full options from ESLint partial options.
+ * @param filename The path of the file being processed.
+ * @param param1 The options.
+ * @returns Named options, using defaults if options partial object did not have element for that option.
  */
-export const getOptions = ([
-  extension,
-  checkAlsoType,
-  knownExtensions,
-]: Readonly<Options>) => ({
-  extension: extension ?? defaultOptions[0],
-  checkAlsoType: checkAlsoType ?? defaultOptions[1],
-  knownExtensions: knownExtensions ?? defaultOptions[2],
+export const getOptions = (
+  filename: string,
+  [opts]: ESLintOptions,
+): FullOptions => ({
+  extension:
+    opts?.extension ??
+    sourceFileExtensionToDefaultExtension[getExtName(filename)] ??
+    DEFAULT_EXTENSION,
+  checkAlsoType: opts?.checkAlsoType ?? defaultOptions.checkAlsoType,
+  knownExtensions: opts?.knownExtensions ?? defaultOptions.knownExtensions,
 });
+/* eslint-enable jsdoc/check-param-names, jsdoc/require-param */
+
+const DEFAULT_EXTENSION = ".js";
+const sourceFileExtensionToDefaultExtension: Record<string, string> = {
+  ".ts": DEFAULT_EXTENSION,
+  ".mts": ".mjs",
+  ".cts": ".cjs",
+};
+
+const getExtName = (filename: string) => {
+  try {
+    return path.extname(filename);
+  } catch {
+    return DEFAULT_EXTENSION;
+  }
+};

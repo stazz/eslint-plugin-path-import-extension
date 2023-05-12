@@ -22,7 +22,7 @@ export default ruleHelpers.createRule({
   },
   create: (ctx, opts) => {
     const { extension, checkAlsoType, knownExtensions } =
-      ruleHelpers.getOptions(opts);
+      ruleHelpers.getOptions(ctx.getFilename(), opts);
     const checkLiteralNode = ruleHelpers.createLiteralNodeCheck(
       ctx,
       MESSAGE_MISSING_EXTENSION,

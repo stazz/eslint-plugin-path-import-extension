@@ -6,7 +6,7 @@ import {
   ESLintUtils,
   TSESLint,
 } from "@typescript-eslint/utils";
-import { type Options } from "../../rule-helpers";
+import { type ESLintOptions } from "../../rule-helpers";
 
 /**
  * Runs tests for given test specifications.
@@ -16,7 +16,7 @@ import { type Options } from "../../rule-helpers";
  * @returns An array of `undefined` (`void`) objects for each given element in `testSpecs`.
  */
 export default <TMessageIds extends string>(
-  rule: TSESLint.RuleModule<TMessageIds, Options>,
+  rule: TSESLint.RuleModule<TMessageIds, ESLintOptions>,
   messageId: TMessageIds,
   testSpecs: ReadonlyArray<TestOpts>,
 ) =>
@@ -50,7 +50,7 @@ export interface TestOpts {
   /**
    * The optional options for ESLint rule.
    */
-  options?: Options;
+  options?: ESLintOptions;
   /**
    * The filename to simulate when ESLint rule is invoked.
    */
@@ -59,7 +59,7 @@ export interface TestOpts {
 
 const performTest =
   <TMessageIds extends string>(
-    rule: TSESLint.RuleModule<TMessageIds, Options>,
+    rule: TSESLint.RuleModule<TMessageIds, ESLintOptions>,
     messageId: TMessageIds,
     ruleTester: ESLintUtils.RuleTester,
   ) =>

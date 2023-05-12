@@ -6,9 +6,11 @@ import test from "ava";
 import setupAVA from "./setupAva";
 import performTests from "./performTests";
 import spec, { MESSAGE_MISSING_EXTENSION } from "../requirePathImportExtension";
-import type { Options } from "../../rule-helpers";
+import type { ESLintOptions } from "../../rule-helpers";
 
-const optionsForTriggeringForTypedExports: Options = [null, true, null];
+const optionsForTriggeringForTypedExports: ESLintOptions = [
+  { checkAlsoType: true },
+];
 setupAVA(test);
 performTests(spec, MESSAGE_MISSING_EXTENSION, [
   {

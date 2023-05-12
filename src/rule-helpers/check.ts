@@ -4,7 +4,7 @@
 import { type TSESLint, type TSESTree } from "@typescript-eslint/utils";
 import * as path from "node:path";
 import * as fs from "node:fs";
-import type { Options } from "./options";
+import type { ESLintOptions, FullOptions } from "./options";
 
 /**
  * Creates callback which will report an issue to `ctx` if the given {@link TSESTree.Literal} is relative path without correct extension.
@@ -15,10 +15,10 @@ import type { Options } from "./options";
  * @returns The callback to use to check the {@link TSESTree.Literal} nodes.
  */
 export default <TMessageId extends string>(
-  ctx: Readonly<TSESLint.RuleContext<TMessageId, Options>>,
+  ctx: Readonly<TSESLint.RuleContext<TMessageId, ESLintOptions>>,
   messageId: TMessageId,
-  extension: NonNullable<Options[0]>,
-  knownExtensions: NonNullable<Options[2]>,
+  extension: FullOptions["extension"],
+  knownExtensions: FullOptions["knownExtensions"],
 ) => {
   const shouldTriggerForString = createShouldTriggerForString(extension);
   return (node: TSESTree.Literal) => {
@@ -37,7 +37,7 @@ export default <TMessageId extends string>(
  * @returns Callback which will return `true` if given path is relative path, and the path doesn't end with given extension.
  */
 const createShouldTriggerForString =
-  (extension: NonNullable<Options[0]>) => (source: string) => {
+  (extension: FullOptions["extension"]) => (source: string) => {
     return (
       (isRelative(source) || source.startsWith("/")) &&
       !source.endsWith(extension)
@@ -53,8 +53,8 @@ const createShouldTriggerForString =
  * @returns The {@link TSESLint.RuleFix} element.
  */
 const createFix = (
-  extension: NonNullable<Options[0]>,
-  knownExtensions: NonNullable<Options[2]>,
+  extension: FullOptions["extension"],
+  knownExtensions: FullOptions["knownExtensions"],
   node: TSESTree.StringLiteral,
   filename: string,
 ): TSESLint.ReportFixFunction => {
@@ -77,7 +77,7 @@ const createFix = (
 };
 
 const fixSourceSpecString = (
-  knownExtensions: NonNullable<Options[2]>,
+  knownExtensions: FullOptions["knownExtensions"],
   sourceWithoutQuotes: string,
 ) => {
   if (knownExtensions.some((ext) => sourceWithoutQuotes.endsWith(ext))) {

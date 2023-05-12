@@ -2,7 +2,7 @@
  * @file This file contains reusable callback to create ESLint rules specific to this package.
  */
 import { ESLintUtils, TSESLint } from "@typescript-eslint/utils";
-import { type Options, optionsSchema, defaultOptions } from "./options";
+import { type ESLintOptions, optionsSchema, defaultOptions } from "./options";
 
 /**
  * Creates callback to create new ESLint rules, which are bound to {@link Options} and using {@link TSESLint.RuleContext}.
@@ -18,7 +18,7 @@ export default <TMessageIds extends string>({
 }: Readonly<
   Omit<
     ESLintUtils.RuleWithMetaAndName<
-      Options,
+      ESLintOptions,
       TMessageIds,
       TSESLint.RuleListener
     >,
@@ -28,8 +28,8 @@ export default <TMessageIds extends string>({
     create: (
       // We must use explicit typing for context, as otherwise we will get TypeScript AST-based context.
       // What we want is TS-ESLing AST-based context, since we specify "@typescript-eslint/parser" as parser in configs/recommended.ts.
-      ctx: Readonly<TSESLint.RuleContext<TMessageIds, Options>>,
-      options: Options,
+      ctx: Readonly<TSESLint.RuleContext<TMessageIds, ESLintOptions>>,
+      options: ESLintOptions,
     ) => TSESLint.RuleListener;
   }
 >) =>
@@ -39,7 +39,7 @@ export default <TMessageIds extends string>({
       ...meta,
       schema: optionsSchema,
     },
-    defaultOptions,
+    defaultOptions: [defaultOptions],
     create,
   });
 

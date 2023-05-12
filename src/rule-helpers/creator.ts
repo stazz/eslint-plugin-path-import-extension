@@ -2,7 +2,11 @@
  * @file This file contains reusable callback to create ESLint rules specific to this package.
  */
 import { ESLintUtils, TSESLint } from "@typescript-eslint/utils";
-import { type ESLintOptions, optionsSchema, defaultOptions } from "./options";
+import {
+  type ESLintOptions,
+  optionsSchema,
+  defaultOptions,
+} from "./options.js";
 
 /**
  * Creates callback to create new ESLint rules, which are bound to {@link Options} and using {@link TSESLint.RuleContext}.

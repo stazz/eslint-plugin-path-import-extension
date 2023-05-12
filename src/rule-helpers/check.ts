@@ -61,10 +61,14 @@ const createFix = (
   const quoteOrBacktick = node.raw[0];
   const targetFilePath = node.value;
   let stringFixerFunc: typeof fixSourceSpecString | undefined;
-  const resolved = path.resolve(filename, targetFilePath);
-  const statResult = fs.statSync(resolved, { throwIfNoEntry: false });
-  if (statResult?.isDirectory()) {
-    stringFixerFunc = () => `${targetFilePath}/index`;
+  try {
+    const resolved = path.resolve(path.dirname(filename), targetFilePath);
+    const statResult = fs.statSync(resolved, { throwIfNoEntry: false });
+    if (statResult?.isDirectory()) {
+      stringFixerFunc = () => `${targetFilePath}/index`;
+    }
+  } catch {
+    // Ignore
   }
   return (fixer) =>
     fixer.replaceText(

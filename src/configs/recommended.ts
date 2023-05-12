@@ -4,11 +4,15 @@
 import {
   RULE_NAME_REQUIRE_PATH_IMPORT_EXTENSION,
   RULE_NAME_REQUIRE_PATH_EXPORT_EXTENSION,
-} from "../rules";
+} from "../rules/index.js";
 export = {
   parser: "@typescript-eslint/parser",
   rules: {
-    [RULE_NAME_REQUIRE_PATH_IMPORT_EXTENSION]: ["error"],
-    [RULE_NAME_REQUIRE_PATH_EXPORT_EXTENSION]: ["error"],
+    [`path-import-extension/${RULE_NAME_REQUIRE_PATH_IMPORT_EXTENSION}`]: [
+      "error",
+    ],
+    [`path-import-extension/${RULE_NAME_REQUIRE_PATH_EXPORT_EXTENSION}`]: [
+      "error",
+    ],
   },
 };

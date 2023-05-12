@@ -2,7 +2,7 @@
  * @file This file contains rule definition for "require-path-import-extension".
  */
 import { AST_NODE_TYPES } from "@typescript-eslint/utils";
-import * as ruleHelpers from "../rule-helpers";
+import * as ruleHelpers from "../rule-helpers/index.js";
 
 export const RULE_NAME = "require-path-import-extension";
 export const MESSAGE_MISSING_EXTENSION = "message-import-missing-extension";

@@ -3,10 +3,10 @@
  */
 import requirePathExportExtension, {
   RULE_NAME as RULE_NAME_REQUIRE_PATH_EXPORT_EXTENSION_IMPORTED,
-} from "./requirePathExportExtension";
+} from "./requirePathExportExtension.js";
 import requirePathImportExtension, {
   RULE_NAME as RULE_NAME_REQUIRE_PATH_IMPORT_EXTENSION_IMPORTED,
-} from "./requirePathImportExtension";
+} from "./requirePathImportExtension.js";
 
 export const RULE_NAME_REQUIRE_PATH_EXPORT_EXTENSION =
   RULE_NAME_REQUIRE_PATH_EXPORT_EXTENSION_IMPORTED;

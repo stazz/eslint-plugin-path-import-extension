@@ -1,7 +1,7 @@
 /**
  * @file This file contains rule definition for "require-path-export-extension".
  */
-import * as ruleHelpers from "../rule-helpers";
+import * as ruleHelpers from "../rule-helpers/index.js";
 
 export const RULE_NAME = "require-path-export-extension";
 export const MESSAGE_MISSING_EXTENSION = "message-export-missing-extension";

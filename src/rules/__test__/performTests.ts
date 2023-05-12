@@ -6,7 +6,7 @@ import {
   ESLintUtils,
   TSESLint,
 } from "@typescript-eslint/utils";
-import { type ESLintOptions } from "../../rule-helpers/index.js";
+import { type ESLintOptions } from "../../rule-helpers";
 
 /**
  * Runs tests for given test specifications.

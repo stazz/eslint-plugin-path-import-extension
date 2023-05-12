@@ -3,11 +3,9 @@
  * @file This file contains unit tests for file "../requirePathExportExtension".
  */
 import test from "ava";
-import setupAVA from "./setupAva.js";
-import performTests from "./performTests.js";
-import spec, {
-  MESSAGE_MISSING_EXTENSION,
-} from "../requirePathExportExtension.js";
+import setupAVA from "./setupAva";
+import performTests from "./performTests";
+import spec, { MESSAGE_MISSING_EXTENSION } from "../requirePathExportExtension";
 import type { ESLintOptions } from "../../rule-helpers";
 
 const optionsForTriggeringForTypedExports: ESLintOptions = [

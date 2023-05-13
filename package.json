@@ -14,7 +14,8 @@
   "files": [
     "./src",
     "./dist-ts",
-    "./dist",
+    "./dist-esm",
+    "./dist-cjs",
     "README.md",
     "LICENSE.txt"
   ],

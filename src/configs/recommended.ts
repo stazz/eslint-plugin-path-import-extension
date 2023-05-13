@@ -6,7 +6,6 @@ import {
   RULE_NAME_REQUIRE_PATH_EXPORT_EXTENSION,
 } from "../rules";
 export default {
-  parser: "@typescript-eslint/parser",
   rules: {
     [`path-import-extension/${RULE_NAME_REQUIRE_PATH_IMPORT_EXTENSION}`]: [
       "error",

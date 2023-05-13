@@ -1,11 +1,7 @@
 /**
  * @file This file contains common test utilities to run tests for ESLint rules.
  */
-import {
-  AST_NODE_TYPES,
-  ESLintUtils,
-  TSESLint,
-} from "@typescript-eslint/utils";
+import { AST_NODE_TYPES, TSESLint } from "@typescript-eslint/utils";
 import { type ESLintOptions } from "../../rule-helpers";
 
 /**
@@ -24,8 +20,8 @@ export default <TMessageIds extends string>(
     performTest(
       rule,
       messageId,
-      new ESLintUtils.RuleTester({
-        parser: "@typescript-eslint/parser",
+      new TSESLint.RuleTester({
+        parser: "@babel/eslint-parser",
       }),
     ),
   );
@@ -61,7 +57,7 @@ const performTest =
   <TMessageIds extends string>(
     rule: TSESLint.RuleModule<TMessageIds, ESLintOptions>,
     messageId: TMessageIds,
-    ruleTester: ESLintUtils.RuleTester,
+    ruleTester: TSESLint.RuleTester,
   ) =>
   ({ name, code, fixedCode, ...opts }: TestOpts) =>
     ruleTester.run(name, rule, {

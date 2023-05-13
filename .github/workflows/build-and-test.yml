@@ -64,6 +64,14 @@ jobs:
 
           ./scripts/test.sh coverage
 
+      - id: lint
+        name: Lint
+        shell: bash
+        run: |
+          set -e
+          
+          ./scripts/lint.sh
+
       # Run build *after* tests - since tests no longer require transpiled JS to run
       # We still want to run build to catch any TS error possibly lurking somewhere.
       # Because we test first and build then, we can do compilation without __tests__ directory.
@@ -76,21 +84,7 @@ jobs:
           set -e
 
           ./scripts/build.sh ci
-          sudo chmod -R o=rwX 'dist-cjs'
-          cat 'package.json' | jq -M 'del(.files, .type, .main, .module, .types, .exports)' > 'dist-cjs/package.json'
-
-      - id: lint
-        name: Lint
-        shell: bash
-        run: |
-          set -e
           
-          # Take this plugin itself into use
-          # Currently looks like only way is to do symlink in node_modules:
-          # https://github.com/eslint/eslint/issues/6237
-          ln -s '..' node_modules/eslint-plugin-path-import-extension
-
-          ./scripts/lint.sh ci
 
       # - id: coverage
       #   name: Upload coverage

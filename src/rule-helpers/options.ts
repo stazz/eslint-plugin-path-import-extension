@@ -80,8 +80,11 @@ export const getOptions = (
 
 const DEFAULT_EXTENSION = ".js";
 const sourceFileExtensionToDefaultExtension: Record<string, string> = {
+  ".js": DEFAULT_EXTENSION,
   ".ts": DEFAULT_EXTENSION,
+  ".mjs": ".mjs",
   ".mts": ".mjs",
+  ".cjs": ".cjs",
   ".cts": ".cjs",
 };
 

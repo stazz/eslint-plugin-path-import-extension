@@ -52,7 +52,7 @@ Then, extend the recommended set (which configures both rules of this plugin to 
 ```
 
 Alternatively, it is possible to configure each rule individually:
-```json
+```javascript
 {
   "rules": {
     "path-import-extension/require-path-export-extension": "error", // Recommended

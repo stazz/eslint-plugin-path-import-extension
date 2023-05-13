@@ -20,8 +20,7 @@ export default ruleHelpers.createRule({
     },
   },
   create: (ctx, opts) => {
-    const { extension, checkAlsoType, knownExtensions } =
-      ruleHelpers.getOptions(ctx.getFilename(), opts);
+    const { extension, checkAlsoType, knownExtensions } = opts;
     const checkLiteralNode = ruleHelpers.createLiteralNodeCheck(
       ctx,
       MESSAGE_MISSING_EXTENSION,
@@ -38,7 +37,6 @@ export default ruleHelpers.createRule({
       // ExportNamedDeclaration: export { x } from "./something"
       ExportNamedDeclaration: ({ source, exportKind }) => {
         if (source && (checkAlsoType || exportKind !== "type")) {
-          // I guess currently this barely ever happens?
           checkLiteralNode(source);
         }
       },

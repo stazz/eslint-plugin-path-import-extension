@@ -1,10 +1,11 @@
 /**
  * @file This file contains code related to actual check performed by rule on a AST node for literal values.
  */
-import { type TSESLint, type TSESTree } from "@typescript-eslint/utils";
+import type { TSESLint, TSESTree } from "@typescript-eslint/utils";
 import * as path from "node:path";
 import * as fs from "node:fs";
-import type { ESLintOptions, FullOptions } from "./options";
+import type { FullOptions } from "./options";
+import type { Context } from "./creator";
 
 /**
  * Creates callback which will report an issue to `ctx` if the given {@link TSESTree.Literal} is relative path without correct extension.
@@ -15,7 +16,7 @@ import type { ESLintOptions, FullOptions } from "./options";
  * @returns The callback to use to check the {@link TSESTree.Literal} nodes.
  */
 export default <TMessageId extends string>(
-  ctx: Readonly<TSESLint.RuleContext<TMessageId, ESLintOptions>>,
+  ctx: Context<TMessageId>,
   messageId: TMessageId,
   extension: FullOptions["extension"],
   knownExtensions: FullOptions["knownExtensions"],

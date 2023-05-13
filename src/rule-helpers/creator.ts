@@ -1,48 +1,55 @@
 /**
  * @file This file contains reusable callback to create ESLint rules specific to this package.
  */
-import { ESLintUtils, TSESLint } from "@typescript-eslint/utils";
-import { type ESLintOptions, optionsSchema, defaultOptions } from "./options";
+import type { ESLintUtils, TSESLint } from "@typescript-eslint/utils";
+import * as options from "./options";
+
+// Notice that we don't use ESLintUtils.RuleCreator.
+// The only thing it does is default option calculation and per-name URL helper
+// The first one is done in "./options", and the 2nd one is trivial to implement oneself.
+// This allows us to push "@typescript-eslint/utils" dependency into type-realm instead of runtime-dependency.
 
 /**
  * Creates callback to create new ESLint rules, which are bound to {@link Options} and using {@link TSESLint.RuleContext}.
  * @param root0 The arguments for the rule, except the ones which will be common.
  * @param root0.create Privately deconstructed variable.
  * @param root0.meta Privately deconstructed variable.
+ * @param root0.name Private deconstructed variable.
  * @returns The ESLint rule which is bound to {@link Options} and using {@link TSESLint.RuleContext}.
  */
 export default <TMessageIds extends string>({
   create,
   meta,
-  ...args
-}: Readonly<
-  Omit<
-    ESLintUtils.RuleWithMetaAndName<
-      ESLintOptions,
-      TMessageIds,
-      TSESLint.RuleListener
-    >,
-    "meta" | "defaultOptions" | "create"
-  > & {
-    meta: Omit<ESLintUtils.NamedCreateRuleMeta<TMessageIds>, "schema">;
-    create: (
-      // We must use explicit typing for context, as otherwise we will get TypeScript AST-based context.
-      // What we want is TS-ESLing AST-based context, since we specify "@typescript-eslint/parser" as parser in configs/recommended.ts.
-      ctx: Readonly<TSESLint.RuleContext<TMessageIds, ESLintOptions>>,
-      options: ESLintOptions,
-    ) => TSESLint.RuleListener;
-  }
->) =>
-  baseCreator({
-    ...args,
-    meta: {
-      ...meta,
-      schema: optionsSchema,
+  name,
+}: Readonly<{
+  name: string;
+  meta: Omit<ESLintUtils.NamedCreateRuleMeta<TMessageIds>, "schema">;
+  create: (
+    ctx: Context<TMessageIds>,
+    options: options.FullOptions,
+  ) => TSESLint.RuleListener;
+}>): TSESLint.RuleModule<
+  TMessageIds,
+  options.ESLintOptions,
+  TSESLint.RuleListener
+> => ({
+  meta: {
+    ...meta,
+    schema: options.schema,
+    docs: {
+      ...meta.docs,
+      // TODO per-rule-name URL
+      url: "https://github.com/stazz/eslint-plugin-path-import-extension",
     },
-    defaultOptions: [defaultOptions],
-    create,
-  });
+  },
+  defaultOptions: [options.defaultOptions],
+  create: (ctx) =>
+    create(ctx, options.getOptions(ctx.getFilename(), ctx.options)),
+});
 
-const baseCreator = ESLintUtils.RuleCreator(
-  () => "https://github.com/stazz/eslint-plugin-path-import-extension",
-);
+/**
+ * The type of the context visible to rules.
+ */
+export type Context<TMessageIds extends string> = Readonly<
+  Omit<TSESLint.RuleContext<TMessageIds, options.ESLintOptions>, "options">
+>;

@@ -7,7 +7,7 @@ import * as path from "node:path";
 /**
  * The schema for rule options.
  */
-export const optionsSchema: Array<JSONSchema4> = [
+export const schema: Array<JSONSchema4> = [
   // The extension that rule will enforce.
   {
     type: "object",
@@ -29,7 +29,7 @@ export const optionsSchema: Array<JSONSchema4> = [
 ];
 
 /**
- * This type is runtime type of options for rules of this plugin, as represented by JSON schema {@link optionsSchema}.
+ * This type is runtime type of options for rules of this plugin, as represented by JSON schema {@link schema}.
  */
 export type Options = Readonly<
   Partial<{

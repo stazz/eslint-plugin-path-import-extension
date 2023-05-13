@@ -1,7 +1,7 @@
 /**
  * @file This file contains rule definition for "require-path-import-extension".
  */
-import { AST_NODE_TYPES } from "@typescript-eslint/utils";
+import type { AST_NODE_TYPES } from "@typescript-eslint/utils";
 import * as ruleHelpers from "../rule-helpers";
 
 export const RULE_NAME = "require-path-import-extension";
@@ -21,8 +21,7 @@ export default ruleHelpers.createRule({
     },
   },
   create: (ctx, opts) => {
-    const { extension, checkAlsoType, knownExtensions } =
-      ruleHelpers.getOptions(ctx.getFilename(), opts);
+    const { extension, checkAlsoType, knownExtensions } = opts;
     const checkLiteralNode = ruleHelpers.createLiteralNodeCheck(
       ctx,
       MESSAGE_MISSING_EXTENSION,
@@ -48,10 +47,13 @@ export default ruleHelpers.createRule({
       // Importimport("something")
       ImportExpression: ({ source }) => {
         // Import expression can not have 'type' modifier
-        if (source.type === AST_NODE_TYPES.Literal) {
+        if (source.type === AST_Literal) {
           checkLiteralNode(source);
         }
       },
     };
   },
 });
+
+// This allows us to push "@typescript-eslint/utils" dependency into type-realm instead of runtime-dependency.
+const AST_Literal = "Literal" as const satisfies `${AST_NODE_TYPES.Literal}`;

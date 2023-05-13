@@ -1,9 +1,9 @@
 /**
  * @file This file contains rule definition for "require-path-export-extension".
  */
-import * as ruleHelpers from "../rule-helpers";
+import * as ruleHelpers from "../../rule-helpers";
 
-export const RULE_NAME = "require-path-export-extension";
+export const RULE_NAME = ruleHelpers.getRuleName(import.meta.url);
 export const MESSAGE_MISSING_EXTENSION = "message-export-missing-extension";
 export default ruleHelpers.createRule({
   name: RULE_NAME,
@@ -19,13 +19,12 @@ export default ruleHelpers.createRule({
       [MESSAGE_MISSING_EXTENSION]: "Path-based export does not have extension.",
     },
   },
-  create: (ctx, opts) => {
-    const { extension, checkAlsoType, knownExtensions } = opts;
+  create: (ctx, options) => {
+    const { checkAlsoType, ...opts } = options;
     const checkLiteralNode = ruleHelpers.createLiteralNodeCheck(
       ctx,
       MESSAGE_MISSING_EXTENSION,
-      extension,
-      knownExtensions,
+      opts,
     );
     return {
       // ExportAllDeclaration: export * from "./something"

@@ -2,9 +2,9 @@
  * @file This file contains rule definition for "require-path-import-extension".
  */
 import type { AST_NODE_TYPES } from "@typescript-eslint/utils";
-import * as ruleHelpers from "../rule-helpers";
+import * as ruleHelpers from "../../rule-helpers";
 
-export const RULE_NAME = "require-path-import-extension";
+export const RULE_NAME = ruleHelpers.getRuleName(import.meta.url);
 export const MESSAGE_MISSING_EXTENSION = "message-import-missing-extension";
 export default ruleHelpers.createRule({
   name: RULE_NAME,
@@ -20,13 +20,12 @@ export default ruleHelpers.createRule({
       [MESSAGE_MISSING_EXTENSION]: "Path-based import does not have extension.",
     },
   },
-  create: (ctx, opts) => {
-    const { extension, checkAlsoType, knownExtensions } = opts;
+  create: (ctx, options) => {
+    const { checkAlsoType, ...opts } = options;
     const checkLiteralNode = ruleHelpers.createLiteralNodeCheck(
       ctx,
       MESSAGE_MISSING_EXTENSION,
-      extension,
-      knownExtensions,
+      opts,
     );
     return {
       // ImportDeclaration: import something from "something"

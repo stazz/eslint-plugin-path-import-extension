@@ -18,7 +18,6 @@
     "incremental": true,
     "outDir": "./dist",
     "rootDir": "./src",
-    "baseUrl": "./src",
     "tsBuildInfoFile": "./build/tsconfig.tsbuildinfo",
     "skipLibCheck": true // Otherwise, we will get
     // node_modules/@typescript-eslint/types/dist/generated/ast-spec.d.ts:395:26 - error TS2430: Interface 'ClassExpression' incorrectly extends interface 'ClassBase'.
@@ -38,10 +37,6 @@
     //                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
   ],
-  "ts-node": {
-    "esm": true,
-    "experimentalSpecifierResolution": "node"
-  },
 }

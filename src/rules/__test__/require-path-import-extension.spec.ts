@@ -1,12 +1,14 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 /**
- * @file This file contains unit tests for file "../requirePathImportExtension".
+ * @file This file contains unit tests for file "../require-path-import-extension/index.ts".
  */
 import test from "ava";
 import setupAVA from "./setupAva";
 import performTests from "./performTests";
-import spec, { MESSAGE_MISSING_EXTENSION } from "../requirePathImportExtension";
-import type { ESLintOptions } from "../../rule-helpers";
+import spec, {
+  MESSAGE_MISSING_EXTENSION,
+} from "../require-path-import-extension";
+import type { ESLintOptions } from "../../rule-helpers/options";
 import * as path from "node:path";
 
 const optionsForTriggeringForTypedExports: ESLintOptions = [

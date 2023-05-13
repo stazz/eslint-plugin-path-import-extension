@@ -3,13 +3,18 @@
 module.exports = {
   root: true,
   extends: [
+    // Reference to this ESLint plugin!
     "plugin:path-import-extension/recommended",
     "plugin:prettier/recommended",
   ],
-  plugins: ["path-import-extension", "prettier"],
+  plugins: [
+    // Reference to this ESLint plugin!
+    "path-import-extension",
+    "prettier"
+  ],
   parser: "@babel/eslint-parser",
   parserOptions: {
-    requireConfigFile: false
+    requireConfigFile: false,
   },
   rules: {
     "prettier/prettier": "error",

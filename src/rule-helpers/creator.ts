@@ -38,8 +38,7 @@ export default <TMessageIds extends string>({
     schema: options.schema,
     docs: {
       ...meta.docs,
-      // TODO per-rule-name URL
-      url: "https://github.com/stazz/eslint-plugin-path-import-extension",
+      url: `https://github.com/stazz/eslint-plugin-path-import-extension/tree/main/src/rules/${name}`,
     },
   },
   defaultOptions: [options.defaultOptions],

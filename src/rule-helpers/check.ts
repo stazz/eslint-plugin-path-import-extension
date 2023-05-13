@@ -7,21 +7,29 @@ import * as fs from "node:fs";
 import type { FullOptions } from "./options";
 import type { Context } from "./creator";
 
+/* eslint-disable jsdoc/require-param, jsdoc/check-param-names */
 /**
  * Creates callback which will report an issue to `ctx` if the given {@link TSESTree.Literal} is relative path without correct extension.
  * @param ctx The {@link TSESLint.RuleContext}
  * @param messageId The ID of the message to use when reporting the error.
- * @param extension The extension to use when auto-fixing.
- * @param knownExtensions The known extension to check when auto-fixing.
+ * @param root2.extension The extension to use when auto-fixing.
+ * @param root2.knownExtensions The known extension to check when auto-fixing.
+ * @param root2.ignoreExtensions The extensions to not to trigger on.
  * @returns The callback to use to check the {@link TSESTree.Literal} nodes.
  */
 export default <TMessageId extends string>(
   ctx: Context<TMessageId>,
   messageId: TMessageId,
-  extension: FullOptions["extension"],
-  knownExtensions: FullOptions["knownExtensions"],
+  {
+    extension,
+    knownExtensions,
+    ignoreExtensions,
+  }: Omit<FullOptions, "checkAlsoType">,
 ) => {
-  const shouldTriggerForString = createShouldTriggerForString(extension);
+  const shouldTriggerForString = createShouldTriggerForString(
+    extension,
+    ignoreExtensions,
+  );
   return (node: TSESTree.Literal) => {
     if (typeof node.value === "string" && shouldTriggerForString(node.value)) {
       ctx.report({
@@ -32,16 +40,25 @@ export default <TMessageId extends string>(
     }
   };
 };
+/* eslint-enable jsdoc/require-param, jsdoc/check-param-names */
 /**
  * Creates callback which can be used to check whether rule should trigger for given import/export path.
  * @param extension The extension to enforce.
+ * @param ignoreExtensions The extensions to not to trigger on.
  * @returns Callback which will return `true` if given path is relative path, and the path doesn't end with given extension.
  */
 const createShouldTriggerForString =
-  (extension: FullOptions["extension"]) => (source: string) => {
+  (
+    extension: FullOptions["extension"],
+    ignoreExtensions: FullOptions["ignoreExtensions"],
+  ) =>
+  (source: string) => {
     return (
       (isRelative(source) || source.startsWith("/")) &&
-      !source.endsWith(extension)
+      !source.endsWith(extension) &&
+      !ignoreExtensions.some((ignoreExtension) =>
+        source.endsWith(ignoreExtension),
+      )
     );
   };
 

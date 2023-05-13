@@ -3,4 +3,4 @@
  */
 export { default as createRule } from "./creator";
 export { default as createLiteralNodeCheck } from "./check";
-export * from "./options";
+export { default as getRuleName } from "./getRuleName";

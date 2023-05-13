@@ -6,7 +6,7 @@ import {
   TSESLint,
   ESLintUtils,
 } from "@typescript-eslint/utils";
-import { type ESLintOptions } from "../../rule-helpers";
+import { type ESLintOptions } from "../../rule-helpers/options";
 import * as url from "node:url";
 
 /**

@@ -22,6 +22,10 @@ export const schema: Array<JSONSchema4> = [
         type: "array",
         items: { type: "string" },
       },
+      ignoreExtensions: {
+        type: "array",
+        items: { type: "string" },
+      },
     },
     minProperties: 0,
     maxProperties: 3,
@@ -36,6 +40,7 @@ export type Options = Readonly<
     extension: string;
     checkAlsoType: boolean;
     knownExtensions: ReadonlyArray<string>;
+    ignoreExtensions: ReadonlyArray<string>;
   }>
 >; // We could use "json-schema-to-ts" module here, but unfortunately that operates on JSON Schema 7, while ESLint operates on JSON Schema 4
 
@@ -54,7 +59,8 @@ export type FullOptions = Readonly<{ [P in keyof Options]-?: Options[P] }>;
  */
 export const defaultOptions = {
   checkAlsoType: false,
-  knownExtensions: [".ts", ".mjs", ".mts", ".cts", ".cjs", ".js"],
+  knownExtensions: [".js", ".ts", ".mjs", ".mts", ".cjs", ".cts"],
+  ignoreExtensions: [".json"],
 } as const satisfies Options;
 
 // eslint-disable-next-line jsdoc/require-param
@@ -75,6 +81,7 @@ export const getOptions = (
     DEFAULT_EXTENSION,
   checkAlsoType: opts?.checkAlsoType ?? defaultOptions.checkAlsoType,
   knownExtensions: opts?.knownExtensions ?? defaultOptions.knownExtensions,
+  ignoreExtensions: opts?.ignoreExtensions ?? defaultOptions.ignoreExtensions,
 });
 /* eslint-enable jsdoc/check-param-names, jsdoc/require-param */
 

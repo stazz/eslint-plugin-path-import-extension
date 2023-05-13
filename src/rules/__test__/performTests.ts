@@ -1,8 +1,13 @@
 /**
  * @file This file contains common test utilities to run tests for ESLint rules.
  */
-import { AST_NODE_TYPES, TSESLint } from "@typescript-eslint/utils";
+import {
+  AST_NODE_TYPES,
+  TSESLint,
+  ESLintUtils,
+} from "@typescript-eslint/utils";
 import { type ESLintOptions } from "../../rule-helpers";
+import * as url from "node:url";
 
 /**
  * Runs tests for given test specifications.
@@ -20,8 +25,8 @@ export default <TMessageIds extends string>(
     performTest(
       rule,
       messageId,
-      new TSESLint.RuleTester({
-        parser: "@babel/eslint-parser",
+      new ESLintUtils.RuleTester({
+        parser: "@typescript-eslint/parser",
       }),
     ),
   );
@@ -51,16 +56,21 @@ export interface TestOpts {
    * The filename to simulate when ESLint rule is invoked.
    */
   filename?: string;
+  /**
+   * Whether the code being run is TypeScript, as opposed to default ESM syntax.
+   */
+  isTypeScript?: boolean;
 }
 
 const performTest =
   <TMessageIds extends string>(
     rule: TSESLint.RuleModule<TMessageIds, ESLintOptions>,
     messageId: TMessageIds,
-    ruleTester: TSESLint.RuleTester,
+    ruleTester: ESLintUtils.RuleTester,
   ) =>
-  ({ name, code, fixedCode, ...opts }: TestOpts) =>
-    ruleTester.run(name, rule, {
+  ({ name, code, fixedCode, isTypeScript, ...opts }: TestOpts) => {
+    isTypeScript = isTypeScript || opts.options?.[0]?.checkAlsoType === true;
+    return ruleTester.run(name, rule, {
       invalid: fixedCode
         ? [
             {
@@ -72,9 +82,32 @@ const performTest =
                 },
               ],
               output: fixedCode,
+              ...(isTypeScript
+                ? {}
+                : {
+                    parser: parserAbsolutePath,
+                    parserOptions: {
+                      requireConfigFile: false,
+                    },
+                  }),
               ...opts,
             },
           ]
         : [],
       valid: fixedCode ? [] : [{ code, ...opts }],
     });
+  };
+
+const parserAbsolutePath = url.fileURLToPath(
+  new URL(
+    await (async () => {
+      const maybeResolved = await import.meta.resolve?.("@babel/eslint-parser");
+      if (!maybeResolved) {
+        throw new Error(
+          "Please run with '--experimental-import-meta-resolve' Node flag.",
+        );
+      }
+      return maybeResolved;
+    })(),
+  ),
+);

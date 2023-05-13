@@ -21,6 +21,7 @@ performTests(spec, MESSAGE_MISSING_EXTENSION, [
   {
     name: "Non-relative type import should not be detected to be a problem",
     code: 'import type dummy from "dummy"',
+    isTypeScript: true,
   },
   {
     name: "Relative import without extension should be auto-fixed",
@@ -30,6 +31,7 @@ performTests(spec, MESSAGE_MISSING_EXTENSION, [
   {
     name: "Relative type import without extension should not be detected to be a problem",
     code: 'import type dummy from "./dummy"',
+    isTypeScript: true,
   },
   {
     name: "Relative import without extension should be auto-fixed, single-quote edition",
@@ -48,6 +50,7 @@ performTests(spec, MESSAGE_MISSING_EXTENSION, [
   {
     name: "Relative type import with incorrect extension should not be detected to be a problem",
     code: 'import type dummy from "./dummy.ts"',
+    isTypeScript: true,
   },
   {
     name: "Absolute import without extension should be auto-fixed",
@@ -65,10 +68,12 @@ performTests(spec, MESSAGE_MISSING_EXTENSION, [
     code: 'import dummy, { something, type somethingElse } from "./dummy"',
     fixedCode:
       'import dummy, { something, type somethingElse } from "./dummy.js"',
+    isTypeScript: true,
   },
   {
     name: "Relative import with multiple type-only elements should not be detected to be a problem",
     code: 'import type dummy, { type something } from "./dummy"',
+    isTypeScript: true,
   },
   {
     name: "Non-relative import _expression_ should not be detected to be a problem",

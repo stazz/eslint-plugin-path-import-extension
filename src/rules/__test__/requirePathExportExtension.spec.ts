@@ -20,6 +20,7 @@ performTests(spec, MESSAGE_MISSING_EXTENSION, [
   {
     name: "Non-relative type export should not be detected to be a problem",
     code: 'export type * from "dummy"',
+    isTypeScript: true,
   },
   {
     name: "Relative export without extension should be auto-fixed",
@@ -37,6 +38,7 @@ performTests(spec, MESSAGE_MISSING_EXTENSION, [
   {
     name: "Non-relative component type export should not be detected to be a problem",
     code: 'export type { dummy } from "dummy"',
+    isTypeScript: true,
   },
   {
     name: "Relative component export should be auto-fixed",
@@ -46,6 +48,7 @@ performTests(spec, MESSAGE_MISSING_EXTENSION, [
   {
     name: "Relative type component export should not be detected to be a problem",
     code: 'export type { dummy } from "./dummy"',
+    isTypeScript: true,
   },
   // With types enabled
   {

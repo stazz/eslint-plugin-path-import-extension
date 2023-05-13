@@ -69,7 +69,7 @@ jobs:
         shell: bash
         run: |
           set -e
-
+          
           ./scripts/lint.sh
 
       # Run build *after* tests - since tests no longer require transpiled JS to run
@@ -84,8 +84,7 @@ jobs:
           set -e
 
           ./scripts/build.sh ci
-          sudo chmod -R o=rwX 'dist-cjs'
-          cat 'package.json' | jq -M 'del(.files, .type, .main, .module, .types, .exports)' > 'dist-cjs/package.json'
+          
 
       # - id: coverage
       #   name: Upload coverage
